@@ -4,11 +4,13 @@ import { format, addDays } from "date-fns";
 import DateSelector from "../components/DateSelector";
 import MovieList from "../components/MovieList";
 import FilterOptions from "../components/FilterOptions";
+import { getMovies, getOriginalLanguageMovies } from "../utils/api";
+import type { Movie } from "../types/theater";
 
 export default function Home() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [showOriginalOnly, setShowOriginalOnly] = useState<boolean>(false);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,21 +25,14 @@ export default function Home() {
 
       try {
         const dateStr = format(selectedDate, "yyyy-MM-dd");
-        const endpoint = showOriginalOnly
-          ? `${process.env.API_URL}/movies/original/${dateStr}`
-          : `${process.env.API_URL}/movies/${dateStr}`;
+        const movies = showOriginalOnly
+          ? await getOriginalLanguageMovies(dateStr)
+          : await getMovies(dateStr);
 
-        const response = await fetch(endpoint);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch movies");
-        }
-
-        const data = await response.json();
-        setMovies(data);
+        setMovies(movies);
       } catch (err) {
         setError("Error loading movies. Please try again later.");
-        console.error(err);
+        console.error("Error fetching movies:", err);
       } finally {
         setLoading(false);
       }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type IconProps = {
   name: string;
@@ -9,25 +9,30 @@ type IconProps = {
 
 /**
  * Icon component for displaying SVG icons
- * 
+ *
  * @param {string} name - The name of the icon (filename without extension)
  * @param {number} size - The size of the icon in pixels
  * @param {string} color - CSS color value to override the icon color
  * @param {string} className - Additional CSS classes
  */
-const Icon: React.FC<IconProps> = ({ name, size = 24, color, className = '' }) => {
+const Icon: React.FC<IconProps> = ({
+  name,
+  size = 24,
+  color,
+  className = "",
+}) => {
   return (
-    <div 
+    <div
       className={`inline-flex items-center justify-center ${className}`}
-      style={{ 
-        width: size, 
+      style={{
+        width: size,
         height: size,
       }}
     >
-      <img 
-        src={`/icons/${name}.svg`} 
-        alt={`${name} icon`} 
-        width={size} 
+      <img
+        src={`/icons/${name}.svg`}
+        alt={`${name} icon`}
+        width={size}
         height={size}
         style={color ? { filter: `${getColorFilter(color)}` } : {}}
       />
@@ -42,15 +47,17 @@ const Icon: React.FC<IconProps> = ({ name, size = 24, color, className = '' }) =
 const getColorFilter = (hexColor: string): string => {
   // For simplicity, we'll just use brightness and contrast filters
   // A more accurate approach would use matrix filters
-  if (hexColor.startsWith('#')) {
+  if (hexColor.startsWith("#")) {
     // Simple approach - works okay for basic recoloring
-    return 'brightness(0) saturate(100%) ' + 
-           `invert(${getColorBrightness(hexColor)}) ` + 
-           `sepia(${getColorSaturation(hexColor)}) ` + 
-           `saturate(${getColorIntensity(hexColor)}) ` + 
-           `hue-rotate(${getColorHue(hexColor)}deg)`;
+    return (
+      "brightness(0) saturate(100%) " +
+      `invert(${getColorBrightness(hexColor)}) ` +
+      `sepia(${getColorSaturation(hexColor)}) ` +
+      `saturate(${getColorIntensity(hexColor)}) ` +
+      `hue-rotate(${getColorHue(hexColor)}deg)`
+    );
   }
-  return '';
+  return "";
 };
 
 // Helper functions for color conversion
@@ -79,12 +86,12 @@ const getColorHue = (hex: string): number => {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
   const g = parseInt(hex.slice(3, 5), 16) / 255;
   const b = parseInt(hex.slice(5, 7), 16) / 255;
-  
+
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  
+
   let h = 0;
-  
+
   if (max === min) {
     h = 0;
   } else if (max === r) {
@@ -94,7 +101,7 @@ const getColorHue = (hex: string): number => {
   } else {
     h = 60 * (4 + (r - g) / (max - min));
   }
-  
+
   if (h < 0) h += 360;
   return h;
 };

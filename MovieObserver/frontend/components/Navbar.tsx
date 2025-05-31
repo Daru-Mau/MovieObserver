@@ -7,14 +7,19 @@ const Navbar = () => {
 
   return (
     <header className="bg-white shadow-sm">
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">        {/* Logo */}
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
+        {" "}
+        {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
-          <img src="/icons/logo.svg" alt="MovieObserver Logo" className="h-8 w-8" />
+          <img
+            src="/icons/logo.svg"
+            alt="MovieObserver Logo"
+            className="h-8 w-8"
+          />
           <span className="text-xl font-bold text-primary-700">
             MovieObserver
           </span>
         </Link>
-
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8">
           <Link
@@ -36,14 +41,15 @@ const Navbar = () => {
             Theaters
           </Link>
         </div>
-
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-gray-600 hover:text-primary-700 focus:outline-none"
-          >          {mobileMenuOpen ? (
+          >
+            {" "}
+            {mobileMenuOpen ? (
               <Icon name="close" size={24} />
             ) : (
               <Icon name="menu" size={24} />

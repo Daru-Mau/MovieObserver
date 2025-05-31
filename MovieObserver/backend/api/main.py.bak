@@ -45,15 +45,15 @@ async def get_all_movies():
     """Get all movies from database"""
     try:
         movies = await MovieRepository.get_all_movies()
-
+        
         # Get showtimes for each movie
         for movie in movies:
-            showtimes_data = await MovieRepository.get_movie_with_showtimes(movie["id"])
+            showtimes_data = await MovieRepository.get_movie_with_showtimes(movie['id'])
             if showtimes_data:
-                movie["showtimes"] = showtimes_data.get("showtimes", [])
+                movie['showtimes'] = showtimes_data.get('showtimes', [])
             else:
-                movie["showtimes"] = []
-
+                movie['showtimes'] = []
+                
         return movies
     except Exception as e:
         print(f"Error fetching movies: {e}")
@@ -65,15 +65,15 @@ async def get_movies_by_date(date: str):
     """Get movies for a specific date"""
     try:
         movies = await MovieRepository.get_all_movies(date)
-
+        
         # Get showtimes for each movie
         for movie in movies:
-            showtimes_data = await MovieRepository.get_movie_with_showtimes(movie["id"])
+            showtimes_data = await MovieRepository.get_movie_with_showtimes(movie['id'])
             if showtimes_data:
-                movie["showtimes"] = showtimes_data.get("showtimes", [])
+                movie['showtimes'] = showtimes_data.get('showtimes', [])
             else:
-                movie["showtimes"] = []
-
+                movie['showtimes'] = []
+                
         return movies
     except Exception as e:
         print(f"Error fetching movies for date {date}: {e}")
@@ -86,22 +86,22 @@ async def get_original_language_movies(date: str):
     try:
         # Get all movies for the given date
         movies = await MovieRepository.get_all_movies(date)
-
+        
         # Filter movies to include only those with original language showtimes
         result = []
         for movie in movies:
-            movie_with_showtimes = await MovieRepository.get_movie_with_showtimes(movie["id"])
+            movie_with_showtimes = await MovieRepository.get_movie_with_showtimes(movie['id'])
             if movie_with_showtimes:
                 # Filter showtimes to include only original language
                 original_showtimes = [
-                    s for s in movie_with_showtimes.get("showtimes", [])
-                    if s.get("is_original_language")
+                    s for s in movie_with_showtimes.get('showtimes', [])
+                    if s.get('is_original_language')
                 ]
-
+                
                 if original_showtimes:  # Only include movies with original language showtimes
-                    movie["showtimes"] = original_showtimes
+                    movie['showtimes'] = original_showtimes
                     result.append(movie)
-
+        
         return result
     except Exception as e:
         print(f"Error fetching original language movies for date {date}: {e}")
@@ -121,42 +121,51 @@ async def get_theaters():
 
 @app.get("/theaters/{theater_id}")
 async def get_theater(theater_id: int):
-    """Get theater by ID"""
-    try:
+    """Get theater by ID"""    try:
         theater = await TheaterRepository.get_theater(theater_id)
-
         if not theater:
             raise HTTPException(status_code=404, detail="Theater not found")
-
+        
         return theater
     except Exception as e:
         print(f"Error fetching theater {theater_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/scrape")
-async def trigger_scrape(background_tasks: BackgroundTasks, date: Optional[str] = None):
-    """Trigger a scrape for a specific date or today"""
-    if not date:
-        date = datetime.now().strftime("%Y-%m-%d")
+@app.post("/scrape/now")
+async def trigger_scraping(background_tasks: BackgroundTasks):
+    """Trigger immediate scraping for today's movies"""
+    try:
+        scraper_service = ScraperService()
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        background_tasks.add_task(scraper_service.scrape_all_cinemas, date_str)
+        return {"message": f"Scraping started for {date_str}"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to start scraping: {str(e)}"
+        )
 
-    scraper_service = ScraperService()
 
-    # Run in background to avoid long response time
-    background_tasks.add_task(scraper_service.scrape_all_cinemas, date)
+@app.post("/scrape/dates")
+async def scrape_multiple_dates(background_tasks: BackgroundTasks, days: int = 7):
+    """Trigger scraping for the next X days"""
+    try:
+        scraper_service = ScraperService()
+        dates = []
 
-    return {"message": f"Scraping started for date {date}"}
+        for i in range(days):
+            date = datetime.now() + timedelta(days=i)
+            date_str = date.strftime("%Y-%m-%d")
+            dates.append(date_str)
+            background_tasks.add_task(scraper_service.scrape_all_cinemas, date_str)
 
-
-@app.post("/scrape/schedule")
-async def schedule_scrape(background_tasks: BackgroundTasks, days: int = 7):
-    """Schedule scraping for multiple days ahead"""
-    scraper_service = ScraperService()
-
-    # Run in background
-    background_tasks.add_task(scraper_service.schedule_daily_scraping, days)
-
-    return {"message": f"Scheduled scraping for {days} days ahead"}
+        return {"message": f"Scraping started for dates: {dates}"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to start scraping: {str(e)}"
+        )
 
 
 if __name__ == "__main__":

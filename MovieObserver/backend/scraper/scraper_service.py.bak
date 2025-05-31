@@ -20,7 +20,7 @@ class ScraperService:
     """
     Service to manage scraping operations from different cinema websites
     """
-
+    
     def __init__(self):
         # No need to store DB instance, we'll get client when needed
         self.scrapers = [
@@ -57,22 +57,22 @@ class ScraperService:
                 movies = scraper.get_movies_for_date(date_str)
                 all_movies.extend(movies)
                 logger.info(
-                    f"Scraped {len(movies)} movies from {scraper.__class__.__name__}")
-            except Exception as e:
+                    f"Scraped {len(movies)} movies from {scraper.__class__.__name__}")            except Exception as e:
                 logger.error(
                     f"Error scraping with {scraper.__class__.__name__}: {e}")
-
+                    
         if all_movies:
             # Store movies in database using repository
             for movie in all_movies:
                 try:
                     # Make sure date is consistent
-                    movie["date"] = date_str
+                    movie['date'] = date_str
                     # Use repository to insert or update movie
                     await MovieRepository.insert_or_update_movie(movie)
+
                 except Exception as e:
                     logger.error(f"Error storing movie {movie['title']}: {e}")
-
+            
             logger.info(f"Updated {len(all_movies)} movies in database")
 
     async def schedule_daily_scraping(self, days_ahead: int = 7) -> None:
