@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Icon from "./Icon";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="bg-white shadow-sm">
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        {/* Logo */}
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">        {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
+          <img src="/icons/logo.svg" alt="MovieObserver Logo" className="h-8 w-8" />
           <span className="text-xl font-bold text-primary-700">
             MovieObserver
           </span>
@@ -43,11 +43,10 @@ const Navbar = () => {
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-gray-600 hover:text-primary-700 focus:outline-none"
-          >
-            {mobileMenuOpen ? (
-              <XMarkIcon className="h-6 w-6" />
+          >          {mobileMenuOpen ? (
+              <Icon name="close" size={24} />
             ) : (
-              <Bars3Icon className="h-6 w-6" />
+              <Icon name="menu" size={24} />
             )}
           </button>
         </div>

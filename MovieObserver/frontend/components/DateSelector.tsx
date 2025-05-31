@@ -1,5 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
+import Icon from "./Icon";
 
 interface DateSelectorProps {
   dates: Date[];
@@ -15,10 +16,12 @@ const DateSelector = ({
   const isSelected = (date: Date) => {
     return format(date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd");
   };
-
   return (
     <div className="mb-6">
-      <h2 className="text-lg font-medium mb-3">Select a date</h2>
+      <div className="flex items-center mb-3">
+        <Icon name="calendar" size={20} className="mr-2" />
+        <h2 className="text-lg font-medium">Select a date</h2>
+      </div>
       <div className="flex flex-wrap gap-2">
         {dates.map((date, index) => (
           <button

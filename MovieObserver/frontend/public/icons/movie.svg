@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Movie clapper board -->
+  <rect x="2" y="4" width="20" height="16" rx="2" fill="#34495e" />
+  <rect x="2" y="4" width="20" height="4" fill="#2c3e50" />
+  
+  <!-- Clapper stripes -->
+  <polygon points="2,4 7,8 5,8 0,4" fill="#95a5a6" />
+  <polygon points="7,4 12,8 10,8 5,4" fill="#7f8c8d" />
+  <polygon points="12,4 17,8 15,8 10,4" fill="#95a5a6" />
+  <polygon points="17,4 22,8 20,8 15,4" fill="#7f8c8d" />
+  
+  <!-- Film frames -->
+  <rect x="5" y="11" width="6" height="4" fill="#3498db" />
+  <rect x="13" y="11" width="6" height="4" fill="#3498db" />
+  <rect x="5" y="16" width="6" height="2" fill="#3498db" />
+  <rect x="13" y="16" width="6" height="2" fill="#3498db" />
+</svg>

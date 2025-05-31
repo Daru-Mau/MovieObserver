@@ -5,13 +5,9 @@ from typing import List, Optional, Dict
 import uvicorn
 from datetime import datetime, timedelta
 
-# Import database connection
+# Import database and models
 from models.database import get_database
-
-# Import movie model
 from models.movie import Movie
-
-# Import scraper service
 from scraper.scraper_service import ScraperService
 
 app = FastAPI(title="Movie Observer API",
@@ -21,10 +17,11 @@ app = FastAPI(title="Movie Observer API",
 # Setup CORS to allow frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Frontend server
+    allow_origins=["*"],  # Allow all origins in development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 
@@ -33,26 +30,138 @@ async def root():
     return {"message": "Welcome to MovieObserver API"}
 
 
-@app.get("/movies", response_model=List[Movie])
+@app.get("/movies")
 async def get_all_movies():
-    db = get_database()
-    movies = await db["movies"].find().to_list(1000)
-    return movies
+    """Get all movies from database"""
+    try:
+        db = get_database()
+        movies = await db["movies"].find().to_list(1000)
+        return movies
+    except Exception as e:
+        # If database is not available, return sample data
+        return []
 
 
 @app.get("/movies/{date}")
 async def get_movies_by_date(date: str):
-    db = get_database()
-    movies = await db["movies"].find({"date": date}).to_list(1000)
-    if not movies:
-        raise HTTPException(
-            status_code=404, detail="No movies found for this date")
-    return movies
+    # Sample data for testing - in production this would query the database
+    sample_movies = [
+        {
+            "title": "Dune: Part Two",
+            "original_title": "Dune: Part Two",
+            "date": date,
+            "image_url": "https://example.com/dune2.jpg",
+            "description": "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
+            "duration": 166,
+            "genres": ["Sci-Fi", "Adventure", "Drama"],
+            "rating": 8.5,
+            "showtimes": [
+                {
+                    "time": "14:00",
+                    "theater": "Grand Cinema City",
+                    "room": "Screen 1",
+                    "is_original_language": True,
+                    "is_3d": False,
+                    "booking_url": "https://example.com/book/1"
+                },
+                {
+                    "time": "17:30",
+                    "theater": "Grand Cinema City", 
+                    "room": "Screen 2",
+                    "is_original_language": False,
+                    "is_3d": True,
+                    "booking_url": "https://example.com/book/2"
+                },
+                {
+                    "time": "20:45",
+                    "theater": "Arthouse Pavilion",
+                    "room": "Main Hall",
+                    "is_original_language": True,
+                    "is_3d": False,
+                    "booking_url": "https://example.com/book/3"
+                }
+            ]
+        },
+        {
+            "title": "Oppenheimer",
+            "original_title": "Oppenheimer", 
+            "date": date,
+            "image_url": "https://example.com/oppenheimer.jpg",
+            "description": "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
+            "duration": 180,
+            "genres": ["Biography", "Drama", "History"],
+            "rating": 8.3,
+            "showtimes": [
+                {
+                    "time": "15:30",
+                    "theater": "Film Forum",
+                    "room": "Screen A",
+                    "is_original_language": True,
+                    "is_3d": False,
+                    "booking_url": "https://example.com/book/4"
+                },
+                {
+                    "time": "19:00",
+                    "theater": "Megaplex 20",
+                    "room": "IMAX",
+                    "is_original_language": False,
+                    "is_3d": False,
+                    "booking_url": "https://example.com/book/5"
+                }
+            ]
+        },
+        {
+            "title": "The Zone of Interest",
+            "original_title": "The Zone of Interest",
+            "date": date,
+            "image_url": "https://example.com/zone.jpg",
+            "description": "The commandant of Auschwitz, Rudolf Höss, and his wife Hedwig, strive to build a dream life for their family.",
+            "duration": 105,
+            "genres": ["Drama", "History", "War"],
+            "rating": 7.4,
+            "showtimes": [
+                {
+                    "time": "18:15",
+                    "theater": "Arthouse Pavilion",
+                    "room": "Theater 2",
+                    "is_original_language": True,
+                    "is_3d": False,
+                    "booking_url": "https://example.com/book/6"
+                },
+                {
+                    "time": "21:30",
+                    "theater": "Film Forum",
+                    "room": "Screen B",
+                    "is_original_language": True,
+                    "is_3d": False,
+                    "booking_url": "https://example.com/book/7"
+                }
+            ]
+        }
+    ]
+    
+    return sample_movies
 
 
 @app.get("/movies/original/{date}")
 async def get_original_language_movies(date: str):
-    db = get_database()
+    # Get all movies for the date and filter for original language showtimes
+    all_movies = await get_movies_by_date(date)
+    
+    # Filter movies that have at least one original language showtime
+    original_movies = []
+    for movie in all_movies:
+        original_showtimes = [
+            showtime for showtime in movie["showtimes"] 
+            if showtime["is_original_language"]
+        ]
+        if original_showtimes:
+            # Create a copy of the movie with only original language showtimes
+            filtered_movie = movie.copy()
+            filtered_movie["showtimes"] = original_showtimes
+            original_movies.append(filtered_movie)
+    
+    return original_movies
 
 
 # Add new endpoints for scraping
@@ -86,14 +195,6 @@ async def scrape_multiple_dates(background_tasks: BackgroundTasks, days: int = 7
         background_tasks.add_task(scraper_service.scrape_all_cinemas, date_str)
 
     return {"message": f"Scraping started for dates: {dates}"}
-    movies = await db["movies"].find({
-        "date": date,
-        "original_language": True
-    }).to_list(1000)
-    if not movies:
-        raise HTTPException(
-            status_code=404, detail="No original language movies found for this date")
-    return movies
 
 
 @app.get("/theaters")

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- 3D glasses base -->
+  <path d="M2,10h20v4c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2V10z" fill="#34495e" />
+  
+  <!-- 3D glasses bridge -->
+  <path d="M9,10.5c0,0,1.5-1.5,3,0s3,0,3,0" fill="none" stroke="#ecf0f1" stroke-width="1" />
+  
+  <!-- Left lens (red) -->
+  <ellipse cx="7" cy="13" rx="4" ry="2.5" fill="#e74c3c" opacity="0.8" />
+  
+  <!-- Right lens (blue) -->
+  <ellipse cx="17" cy="13" rx="4" ry="2.5" fill="#3498db" opacity="0.8" />
+  
+  <!-- Text -->
+  <text x="12" y="14" font-family="Arial, sans-serif" font-size="4.5" font-weight="bold" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">3D</text>
+</svg>

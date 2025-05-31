@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Ticket base -->
+  <path d="M2,7L22,7L22,17L2,17z" fill="#e74c3c" />
+  
+  <!-- Ticket zigzag cut -->
+  <path d="M2,7v2c1.1,0,2,0.9,2,2s-0.9,2-2,2v2h20v-2c-1.1,0-2-0.9-2-2s0.9-2,2-2V7H2z" fill="#c0392b" />
+  
+  <!-- Ticket details -->
+  <rect x="5" y="9" width="6" height="6" fill="#ecf0f1" />
+  <rect x="13" y="10" width="6" height="1" fill="#ecf0f1" />
+  <rect x="13" y="13" width="6" height="1" fill="#ecf0f1" />
+  
+  <!-- Film strip holes -->
+  <rect x="3" y="8" width="1" height="1" fill="#ecf0f1" />
+  <rect x="3" y="11" width="1" height="1" fill="#ecf0f1" />
+  <rect x="3" y="14" width="1" height="1" fill="#ecf0f1" />
+  <rect x="20" y="8" width="1" height="1" fill="#ecf0f1" />
+  <rect x="20" y="11" width="1" height="1" fill="#ecf0f1" />
+  <rect x="20" y="14" width="1" height="1" fill="#ecf0f1" />
+</svg>
