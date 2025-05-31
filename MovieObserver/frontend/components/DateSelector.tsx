@@ -1,5 +1,5 @@
-import React from 'react';
-import { format } from 'date-fns';
+import React from "react";
+import { format } from "date-fns";
 
 interface DateSelectorProps {
   dates: Date[];
@@ -7,9 +7,13 @@ interface DateSelectorProps {
   onSelectDate: (date: Date) => void;
 }
 
-const DateSelector = ({ dates, selectedDate, onSelectDate }: DateSelectorProps) => {
+const DateSelector = ({
+  dates,
+  selectedDate,
+  onSelectDate,
+}: DateSelectorProps) => {
   const isSelected = (date: Date) => {
-    return format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd');
+    return format(date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd");
   };
 
   return (
@@ -21,14 +25,15 @@ const DateSelector = ({ dates, selectedDate, onSelectDate }: DateSelectorProps) 
             key={index}
             onClick={() => onSelectDate(date)}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors
-              ${isSelected(date) 
-                ? 'bg-primary-600 text-white' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ${
+                isSelected(date)
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
           >
-            <div className="text-xs">{format(date, 'EEE')}</div>
-            <div className="text-base font-semibold">{format(date, 'd')}</div>
-            <div className="text-xs">{format(date, 'MMM')}</div>
+            <div className="text-xs">{format(date, "EEE")}</div>
+            <div className="text-base font-semibold">{format(date, "d")}</div>
+            <div className="text-xs">{format(date, "MMM")}</div>
           </button>
         ))}
       </div>

@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 interface Showtime {
   time: string;
@@ -61,64 +61,65 @@ const MovieCard = ({ movie }: MovieCardProps) => {
         {/* Movie Details */}
         <div className="flex-1 p-4">
           <h3 className="text-xl font-bold text-gray-900">{movie.title}</h3>
-          
+
           {movie.original_title && movie.original_title !== movie.title && (
             <p className="text-sm text-gray-500 italic mb-2">
               Original title: {movie.original_title}
             </p>
           )}
-          
+
           <div className="flex flex-wrap gap-2 mb-2">
             {movie.genres?.map((genre, index) => (
-              <span 
-                key={index} 
+              <span
+                key={index}
                 className="px-2 py-1 bg-gray-100 text-xs text-gray-700 rounded"
               >
                 {genre}
               </span>
             ))}
           </div>
-          
+
           {movie.duration && (
             <p className="text-sm text-gray-500 mb-2">
-              Duration: {Math.floor(movie.duration / 60)}h {movie.duration % 60}m
+              Duration: {Math.floor(movie.duration / 60)}h {movie.duration % 60}
+              m
             </p>
           )}
-          
+
           {movie.rating && (
             <div className="flex items-center mb-3">
               <span className="text-yellow-500">★</span>
               <span className="ml-1 text-sm">{movie.rating.toFixed(1)}/10</span>
             </div>
           )}
-          
+
           {movie.description && (
             <p className="text-gray-700 mb-4 line-clamp-3">
               {movie.description}
             </p>
           )}
-          
+
           {/* Showtimes by theater */}
           <div className="mt-4">
             <h4 className="font-semibold text-gray-800 mb-2">Showtimes:</h4>
-            
+
             {Object.entries(showtimesByTheater).map(([theater, times]) => (
               <div key={theater} className="mb-3">
                 <h5 className="font-medium text-gray-700">{theater}</h5>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {times.map((showtime, index) => (
-                    <Link 
+                    <Link
                       key={index}
-                      href={showtime.booking_url || '#'}
+                      href={showtime.booking_url || "#"}
                       className={`px-3 py-1 text-sm rounded border ${
-                        showtime.is_original_language 
-                          ? 'border-green-500 bg-green-50 text-green-700' 
-                          : 'border-gray-300 bg-gray-50 text-gray-700'
+                        showtime.is_original_language
+                          ? "border-green-500 bg-green-50 text-green-700"
+                          : "border-gray-300 bg-gray-50 text-gray-700"
                       }`}
                     >
                       {showtime.time}
-                      {showtime.is_original_language && ' (OV)'}
-                      {showtime.is_3d && ' 3D'}
+                      {showtime.is_original_language && " (OV)"}
+                      {showtime.is_3d && " 3D"}
                     </Link>
                   ))}
                 </div>

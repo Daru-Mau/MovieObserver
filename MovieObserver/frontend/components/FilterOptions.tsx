@@ -1,15 +1,18 @@
-import React from 'react';
+import React from "react";
 
 interface FilterOptionsProps {
   showOriginalOnly: boolean;
   setShowOriginalOnly: (show: boolean) => void;
 }
 
-const FilterOptions = ({ showOriginalOnly, setShowOriginalOnly }: FilterOptionsProps) => {
+const FilterOptions = ({
+  showOriginalOnly,
+  setShowOriginalOnly,
+}: FilterOptionsProps) => {
   return (
     <div className="bg-gray-50 p-4 rounded-lg mb-6">
       <h2 className="text-lg font-medium mb-2">Filter Options</h2>
-      
+
       <div className="flex items-center">
         <input
           id="original-language"
@@ -22,7 +25,7 @@ const FilterOptions = ({ showOriginalOnly, setShowOriginalOnly }: FilterOptionsP
           Show only original language screenings
         </label>
       </div>
-      
+
       {/* Additional filters can be added here */}
     </div>
   );

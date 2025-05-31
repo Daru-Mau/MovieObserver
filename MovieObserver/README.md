@@ -57,7 +57,7 @@ from scraper.base_scraper import BaseScraper
 class NewCinemaScraper(BaseScraper):
     def __init__(self, base_url: str = "https://www.new-cinema-website.com"):
         super().__init__(base_url)
-        
+
     def get_movies_for_date(self, date: str):
         # Implementation for scraping this specific cinema website
         pass
@@ -73,10 +73,12 @@ self.scrapers = [
 ```
 
 The current implementation includes example scrapers for:
+
 - Yelmo Cinemas (https://www.yelmocines.es)
 - Cinessa Cinemas (https://www.cinessa.com)
 
 You can trigger the scraping process manually via the API endpoints:
+
 - `/scrape/now` - Scrape movies for today
 - `/scrape/dates?days=7` - Scrape movies for the next 7 days
 
@@ -173,7 +175,7 @@ npm run dev
    - Start the backend server
 3. In the second terminal:
    - Start the frontend server
-   
+
 This way, you can see both frontend and backend logs separately.
 
 ## Deployment

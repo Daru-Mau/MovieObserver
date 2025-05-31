@@ -8,6 +8,7 @@ from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
+
 class YelmoScraper(BaseScraper):
     """
     Scraper implementation for Yelmo Cinemas (Spain)
@@ -28,8 +29,9 @@ class YelmoScraper(BaseScraper):
         """
         # Convert date string to required format (if needed)
         date_obj = datetime.strptime(date, "%Y-%m-%d")
-        formatted_date = date_obj.strftime("%d-%m-%Y")  # Adjust format as needed
-        
+        formatted_date = date_obj.strftime(
+            "%d-%m-%Y")  # Adjust format as needed
+
         # Construct the URL for the specific date
         url = f"{self.base_url}/cartelera/#{formatted_date}"
         logger.info(f"Scraping movies from {url}")
@@ -45,7 +47,8 @@ class YelmoScraper(BaseScraper):
         soup = BeautifulSoup(html_content, 'lxml')
 
         # Find all movie containers (adjust selector based on actual website structure)
-        movie_containers = soup.select('.movie-container')  # Replace with actual selector
+        # Replace with actual selector
+        movie_containers = soup.select('.movie-container')
 
         movies = []
 
@@ -55,27 +58,29 @@ class YelmoScraper(BaseScraper):
                 title = container.select_one('.movie-title').text.strip()
                 original_title_elem = container.select_one('.original-title')
                 original_title = original_title_elem.text.strip() if original_title_elem else title
-                
+
                 # Determine if movie is in original language
-                is_original_language = any('V.O.' in tag.text for tag in container.select('.language-tag'))
-                
+                is_original_language = any(
+                    'V.O.' in tag.text for tag in container.select('.language-tag'))
+
                 # Extract showtime information
                 showtime_elements = container.select('.showtime')
                 showtimes = []
-                
+
                 for element in showtime_elements:
                     time_str = element.text.strip()
                     # Check if this showtime is in original language
                     is_vo = 'V.O.' in element.parent.text
-                    
+
                     showtime = Showtime(
                         time=time_str,
                         is_original_language=is_vo,
                         theater_screen="Standard",  # Default value, update if available
-                        booking_url=f"{self.base_url}{element.get('href')}" if element.get('href') else None
+                        booking_url=f"{self.base_url}{element.get('href')}" if element.get(
+                            'href') else None
                     )
                     showtimes.append(showtime.dict())
-                
+
                 # Create movie object
                 movie = {
                     "title": title,
@@ -89,21 +94,21 @@ class YelmoScraper(BaseScraper):
                     "theater": "Yelmo Cinemas",
                     "url": f"{self.base_url}{container.select_one('a').get('href')}" if container.select_one('a') else None
                 }
-                
+
                 movies.append(movie)
-                
+
             except Exception as e:
                 logger.error(f"Error parsing movie: {e}")
                 continue
-                
+
         logger.info(f"Scraped {len(movies)} movies from Yelmo Cinemas")
         return movies
-    
+
     def _extract_duration(self, duration_text: str) -> int:
         """Extract movie duration in minutes from text"""
         if not duration_text:
             return None
-            
+
         match = re.search(r'(\d+)\s*min', duration_text)
         if match:
             return int(match.group(1))

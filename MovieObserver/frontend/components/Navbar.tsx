@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import React, { useState } from "react";
+import Link from "next/link";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,18 +10,29 @@ const Navbar = () => {
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-primary-700">MovieObserver</span>
+          <span className="text-xl font-bold text-primary-700">
+            MovieObserver
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8">
-          <Link href="/" className="text-gray-600 hover:text-primary-700 transition-colors">
+          <Link
+            href="/"
+            className="text-gray-600 hover:text-primary-700 transition-colors"
+          >
             Home
           </Link>
-          <Link href="/about" className="text-gray-600 hover:text-primary-700 transition-colors">
+          <Link
+            href="/about"
+            className="text-gray-600 hover:text-primary-700 transition-colors"
+          >
             About
           </Link>
-          <Link href="/theaters" className="text-gray-600 hover:text-primary-700 transition-colors">
+          <Link
+            href="/theaters"
+            className="text-gray-600 hover:text-primary-700 transition-colors"
+          >
             Theaters
           </Link>
         </div>
@@ -46,19 +57,25 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="container mx-auto px-4 py-2 space-y-2">
-            <Link href="/" 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 text-gray-600 hover:text-primary-700">
+            <Link
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-gray-600 hover:text-primary-700"
+            >
               Home
             </Link>
-            <Link href="/about" 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 text-gray-600 hover:text-primary-700">
+            <Link
+              href="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-gray-600 hover:text-primary-700"
+            >
               About
             </Link>
-            <Link href="/theaters" 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 text-gray-600 hover:text-primary-700">
+            <Link
+              href="/theaters"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-gray-600 hover:text-primary-700"
+            >
               Theaters
             </Link>
           </div>

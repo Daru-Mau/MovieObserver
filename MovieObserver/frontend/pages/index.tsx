@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
-import { format, addDays } from 'date-fns';
-import DateSelector from '../components/DateSelector';
-import MovieList from '../components/MovieList';
-import FilterOptions from '../components/FilterOptions';
+import React, { useState, useEffect } from "react";
+import Head from "next/head";
+import { format, addDays } from "date-fns";
+import DateSelector from "../components/DateSelector";
+import MovieList from "../components/MovieList";
+import FilterOptions from "../components/FilterOptions";
 
 export default function Home() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -20,29 +20,29 @@ export default function Home() {
     const fetchMovies = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
-        const dateStr = format(selectedDate, 'yyyy-MM-dd');
-        const endpoint = showOriginalOnly 
+        const dateStr = format(selectedDate, "yyyy-MM-dd");
+        const endpoint = showOriginalOnly
           ? `${process.env.API_URL}/movies/original/${dateStr}`
           : `${process.env.API_URL}/movies/${dateStr}`;
-          
+
         const response = await fetch(endpoint);
-        
+
         if (!response.ok) {
-          throw new Error('Failed to fetch movies');
+          throw new Error("Failed to fetch movies");
         }
-        
+
         const data = await response.json();
         setMovies(data);
       } catch (err) {
-        setError('Error loading movies. Please try again later.');
+        setError("Error loading movies. Please try again later.");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchMovies();
   }, [selectedDate, showOriginalOnly]);
 
@@ -57,17 +57,18 @@ export default function Home() {
           Movie Showtimes
         </h1>
         <p className="text-gray-600">
-          Find movies playing in theaters today, with options for original language screenings.
+          Find movies playing in theaters today, with options for original
+          language screenings.
         </p>
       </section>
 
-      <DateSelector 
-        dates={nextDays} 
-        selectedDate={selectedDate} 
-        onSelectDate={setSelectedDate} 
+      <DateSelector
+        dates={nextDays}
+        selectedDate={selectedDate}
+        onSelectDate={setSelectedDate}
       />
 
-      <FilterOptions 
+      <FilterOptions
         showOriginalOnly={showOriginalOnly}
         setShowOriginalOnly={setShowOriginalOnly}
       />

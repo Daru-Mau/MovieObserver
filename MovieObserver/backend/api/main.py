@@ -53,8 +53,8 @@ async def get_movies_by_date(date: str):
 @app.get("/movies/original/{date}")
 async def get_original_language_movies(date: str):
     db = get_database()
-    
-    
+
+
 # Add new endpoints for scraping
 @app.post("/scrape/now")
 async def trigger_scraping(background_tasks: BackgroundTasks):
@@ -63,13 +63,13 @@ async def trigger_scraping(background_tasks: BackgroundTasks):
     """
     scraper_service = ScraperService()
     date_str = datetime.now().strftime("%Y-%m-%d")
-    
+
     # Run scraping in background
     background_tasks.add_task(scraper_service.scrape_all_cinemas, date_str)
-    
+
     return {"message": f"Scraping started for {date_str}"}
-    
-    
+
+
 @app.post("/scrape/dates")
 async def scrape_multiple_dates(background_tasks: BackgroundTasks, days: int = 7):
     """
@@ -77,14 +77,14 @@ async def scrape_multiple_dates(background_tasks: BackgroundTasks, days: int = 7
     """
     scraper_service = ScraperService()
     dates = []
-    
+
     # Schedule scraping for each day
     for i in range(days):
         date = datetime.now() + timedelta(days=i)
         date_str = date.strftime("%Y-%m-%d")
         dates.append(date_str)
         background_tasks.add_task(scraper_service.scrape_all_cinemas, date_str)
-    
+
     return {"message": f"Scraping started for dates: {dates}"}
     movies = await db["movies"].find({
         "date": date,
@@ -182,7 +182,7 @@ async def get_theater(theater_id: str):
             "features": ["Original Language", "Classic Films", "Student Discounts"]
         }
     }
-    
+
     theater = theaters.get(theater_id)
     if not theater:
         raise HTTPException(status_code=404, detail="Theater not found")

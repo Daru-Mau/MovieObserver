@@ -1,37 +1,41 @@
-import React, { useState } from 'react';
-import Head from 'next/head';
+import React, { useState } from "react";
+import Head from "next/head";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
 
   const [status, setStatus] = useState({
     submitted: false,
     error: false,
-    message: ''
+    message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate form
     if (!formData.name || !formData.email || !formData.message) {
       setStatus({
         submitted: false,
         error: true,
-        message: 'Please fill out all required fields'
+        message: "Please fill out all required fields",
       });
       return;
     }
@@ -42,26 +46,26 @@ export default function Contact() {
       setStatus({
         submitted: false,
         error: true,
-        message: 'Please enter a valid email address'
+        message: "Please enter a valid email address",
       });
       return;
     }
 
     // In a real application, you would send the form data to the server here
-    
+
     // Simulate form submission
     setStatus({
       submitted: true,
       error: false,
-      message: 'Thank you! Your message has been received.'
+      message: "Thank you! Your message has been received.",
     });
 
     // Reset form
     setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
     });
   };
 
@@ -69,7 +73,10 @@ export default function Contact() {
     <>
       <Head>
         <title>Contact Us - MovieObserver</title>
-        <meta name="description" content="Contact MovieObserver for questions, suggestions or feedback" />
+        <meta
+          name="description"
+          content="Contact MovieObserver for questions, suggestions or feedback"
+        />
       </Head>
 
       <div className="max-w-2xl mx-auto">
@@ -78,8 +85,9 @@ export default function Contact() {
         <div className="bg-white shadow-md rounded-lg overflow-hidden mb-8">
           <div className="p-6">
             <p className="text-gray-600 mb-6">
-              Have questions, suggestions, or feedback about MovieObserver? 
-              We'd love to hear from you! Please fill out the form below and we'll get back to you as soon as possible.
+              Have questions, suggestions, or feedback about MovieObserver? We'd
+              love to hear from you! Please fill out the form below and we'll
+              get back to you as soon as possible.
             </p>
 
             {status.submitted ? (
@@ -94,7 +102,10 @@ export default function Contact() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Name *
                 </label>
                 <input
@@ -108,7 +119,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Email *
                 </label>
                 <input
@@ -122,7 +136,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="subject"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Subject
                 </label>
                 <select
@@ -142,7 +159,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Message *
                 </label>
                 <textarea
@@ -166,16 +186,21 @@ export default function Contact() {
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold text-gray-800 mb-3">Other Ways to Reach Us</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-3">
+            Other Ways to Reach Us
+          </h2>
           <div className="space-y-3">
             <p className="text-gray-600">
-              <span className="font-medium">Email:</span> contact@movieobserver.com
+              <span className="font-medium">Email:</span>{" "}
+              contact@movieobserver.com
             </p>
             <p className="text-gray-600">
-              <span className="font-medium">Address:</span> 123 Cinema Street, Movie Town, MT 12345
+              <span className="font-medium">Address:</span> 123 Cinema Street,
+              Movie Town, MT 12345
             </p>
             <p className="text-gray-600">
-              <span className="font-medium">Hours:</span> Monday - Friday, 9am - 5pm
+              <span className="font-medium">Hours:</span> Monday - Friday, 9am -
+              5pm
             </p>
           </div>
         </div>

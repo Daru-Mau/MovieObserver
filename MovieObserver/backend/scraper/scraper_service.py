@@ -27,10 +27,10 @@ class ScraperService:
             YelmoScraper("https://www.yelmocines.es"),
             CinessaScraper("https://www.cinessa.com"),
             UCICinemasScraper("https://ucicinemas.it"),
-            
+
             # Example scrapers (for testing)
             CinemaScraper("https://www.example-cinema.com"),
-            
+
             # Add more cinema websites as needed
             # Create a new scraper class for each cinema chain with unique HTML structure
         ]
