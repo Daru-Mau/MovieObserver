@@ -8,8 +8,6 @@ from models.repository import MovieRepository
 
 # Import scrapers
 from scraper.cinema_scraper import CinemaScraper
-from scraper.yelmo_scraper import YelmoScraper
-from scraper.cinessa_scraper import CinessaScraper
 from scraper.uci_cinemas_scraper import UCICinemasScraper
 from scraper.spaziocinema_scraper import SpaziocinemaInfoScraper
 
@@ -25,8 +23,6 @@ class ScraperService:
         # No need to store DB instance, we'll get client when needed
         self.scrapers = [
             # Real cinema website scrapers
-            YelmoScraper("https://www.yelmocines.es"),
-            CinessaScraper("https://www.cinessa.com"),
             UCICinemasScraper("https://ucicinemas.it"),
             SpaziocinemaInfoScraper("https://www.spaziocinema.info"),
 
