@@ -1,0 +1,10 @@
+import React from 'react';
+
+// Instructions for setting up a basic favicon:
+// 1. Create favicon.ico file (a simple one)
+// 2. Place it in the public folder
+// 3. These instructions exist as a placeholder for a real favicon
+//    In a real project, you would need to generate proper favicon files
+//    using tools like https://realfavicongenerator.net/
+
+console.log('This file is just a placeholder for favicon setup instructions');
