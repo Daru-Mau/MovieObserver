@@ -7,9 +7,7 @@ import os
 from datetime import datetime
 import traceback
 
-from scraper.cinema_scraper import CinemaScraper
-from scraper.spaziocinema_scraper import SpaziocinemaInfoScraper
-from scraper.uci_cinemas_scraper import UCICinemasScraper
+from scraper import UCICinemasScraper, SpaziocinemaInfoScraper
 
 # Now import using relative path
 
@@ -23,7 +21,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def test_single_scraper(scraper, date_str=None):
+def run_scraper_test(scraper, date_str=None):
     """Test a single scraper and print results"""
     if date_str is None:
         date_str = datetime.now().strftime("%Y-%m-%d")
@@ -53,17 +51,16 @@ if __name__ == "__main__":
 
     print("\n" + "="*50)
     logger.info("Testing SpaziocinemaInfoScraper")
-    movies = test_single_scraper(scraper)
+    movies = run_scraper_test(scraper)
     print("="*50 + "\n")
 
     # If you want to test other scrapers:
     scrapers = [
         UCICinemasScraper("https://ucicinemas.it"),
         SpaziocinemaInfoScraper("https://www.spaziocinema.info"),
-        CinemaScraper("https://www.example-cinema.com")
     ]
 
     for scraper in scrapers:
         print("\n" + "="*50)
-        movies = test_single_scraper(scraper)
+        movies = run_scraper_test(scraper)
         print("="*50 + "\n")
