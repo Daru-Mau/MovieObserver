@@ -36,7 +36,7 @@ MovieObserver is a web application that scrapes movie showtimes from different c
 ### Backend
 
 - **Python** with FastAPI for the API
-- **MongoDB** for database storage
+- **Supabase** for database storage
 - **BeautifulSoup/Selenium** for web scraping
 
 ### Frontend
@@ -69,8 +69,8 @@ MovieObserver/
 
 - Python 3.8+
 - Node.js 14+
-- MongoDB 4.4+
 - Chrome/Chromium (for Selenium)
+- Supabase account
 
 ### Installation
 
@@ -128,7 +128,8 @@ npm install
 Create a `.env` file in the `backend` directory:
 
 ```
-MONGODB_URI=mongodb://localhost:27017/movieobserver
+SUPABASE_URL=your-supabase-project-url
+SUPABASE_KEY=your-supabase-api-key
 LOG_LEVEL=INFO
 CHROME_DRIVER_PATH=/path/to/chromedriver  # Optional, for custom chromedriver location
 ```
@@ -143,9 +144,9 @@ API_URL=http://localhost:8000
 
 ### Running the Application
 
-1. **Start MongoDB:**
+1. **Supabase Setup:**
 
-Make sure MongoDB is running on your system.
+Make sure your Supabase project is properly set up with the required tables.
 
 2. **Start Backend Server:**
 

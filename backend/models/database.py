@@ -1,15 +1,14 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+"""
+This module is maintained for backwards compatibility.
+The project now uses Supabase for database operations.
+See models/supabase.py for the current database implementation.
+"""
 from dotenv import load_dotenv
-import os
 import logging
 from typing import Dict, Any
 
 # Load environment variables
 load_dotenv()
-
-# Get MongoDB connection string from environment variables
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-DB_NAME = os.getenv("DB_NAME", "movieobserver")
 
 # In-memory mock database for development
 mock_db = {
@@ -52,21 +51,14 @@ class MockDatabase:
         return self.collections[name]
 
 
-try:
-    # Try to connect to MongoDB
-    client = AsyncIOMotorClient(MONGO_URI, serverSelectionTimeoutMS=2000)
-    # Verify the connection
-    client.server_info()
-    database = client[DB_NAME]
-    logging.info("Connected to MongoDB successfully")
-except Exception as e:
-    logging.warning(
-        f"Could not connect to MongoDB: {e}. Using mock database instead.")
-    database = MockDatabase(mock_db)
+# Initialize mock database
+database = MockDatabase(mock_db)
+logging.info("Using mock database for legacy code support")
 
 
 def get_database():
     """
-    Return the database instance (either MongoDB or mock)
+    Return the mock database instance
+    Note: This function is maintained for backwards compatibility
     """
     return database
