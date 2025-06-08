@@ -50,13 +50,17 @@ class ScraperService:
 
         for scraper in self.scrapers:
             try:
+                logger.info(f"Starting scraping with {scraper.__class__.__name__} for date {date_str}")
                 movies = scraper.get_movies_for_date(date_str)
-                all_movies.extend(movies)
-                logger.info(
-                    f"Scraped {len(movies)} movies from {scraper.__class__.__name__}")
+                
+                if movies:
+                    logger.info(f"Successfully scraped {len(movies)} movies from {scraper.__class__.__name__}")
+                    all_movies.extend(movies)
+                else:
+                    logger.warning(f"No movies found from {scraper.__class__.__name__} for date {date_str}")
             except Exception as e:
                 logger.error(
-                    f"Error scraping with {scraper.__class__.__name__}: {e}")
+                    f"Error scraping with {scraper.__class__.__name__}: {str(e)}", exc_info=True)
 
         if all_movies:
             # Store movies in database using repository

@@ -140,12 +140,25 @@ async def trigger_scrape(background_tasks: BackgroundTasks, date: Optional[str] 
     if not date:
         date = datetime.now().strftime("%Y-%m-%d")
 
-    scraper_service = ScraperService()
-
-    # Run in background to avoid long response time
-    background_tasks.add_task(scraper_service.scrape_all_cinemas, date)
-
-    return {"message": f"Scraping started for date {date}"}
+    try:
+        # Initialize the scraper service
+        scraper_service = ScraperService()
+        
+        # Run in background to avoid long response time
+        background_tasks.add_task(scraper_service.scrape_all_cinemas, date)
+        
+        # Return success message
+        return {
+            "status": "success",
+            "message": f"Scraping started for date {date}",
+            "details": "The scraper is running in the background. Check server logs for results."
+        }
+    except Exception as e:
+        print(f"Error starting scrape for date {date}: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to start scraping: {str(e)}"
+        )
 
 
 @app.post("/scrape/schedule")

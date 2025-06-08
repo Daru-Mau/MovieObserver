@@ -2,12 +2,20 @@ import logging
 from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 import requests
+import os
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from datetime import datetime
 from typing import List, Dict, Any, Optional
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Setup logging
 logging.basicConfig(
@@ -58,7 +66,7 @@ class BaseScraper(ABC):
         except requests.RequestException as e:
             logger.error(f"Error fetching {url}: {e}")
             return None
-
+            
     def get_page_with_selenium(self, url: str) -> Optional[str]:
         """
         Get the HTML content of a page using Selenium (for JavaScript-rendered content)
@@ -70,14 +78,38 @@ class BaseScraper(ABC):
             Optional[str]: HTML content or None if request failed
         """
         try:
-            chrome_options = Options()
-            chrome_options.add_argument("--headless")
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-dev-shm-usage")
+            # Check which WebDriver to use based on env settings
+            firefox_driver_path = os.getenv('FIREFOX_DRIVER_PATH')
+            chrome_driver_path = os.getenv('CHROME_DRIVER_PATH')
+            
+            if firefox_driver_path is not None:
+                # Use Firefox WebDriver
+                firefox_options = FirefoxOptions()
+                firefox_options.add_argument("--headless")
+                
+                if firefox_driver_path.lower() == 'none':
+                    service = FirefoxService(GeckoDriverManager().install())
+                else:
+                    service = FirefoxService(firefox_driver_path)
+                
+                logger.info("Using Firefox WebDriver")
+                driver = webdriver.Firefox(service=service, options=firefox_options)
+            else:
+                # Use Chrome WebDriver as fallback
+                chrome_options = ChromeOptions()
+                chrome_options.add_argument("--headless")
+                chrome_options.add_argument("--no-sandbox")
+                chrome_options.add_argument("--disable-dev-shm-usage")
+                
+                if chrome_driver_path:
+                    service = ChromeService(chrome_driver_path)
+                else:
+                    service = ChromeService(ChromeDriverManager().install())
+                
+                logger.info("Using Chrome WebDriver")
+                driver = webdriver.Chrome(service=service, options=chrome_options)
 
-            service = Service(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=chrome_options)
-
+            logger.info(f"Fetching page with Selenium: {url}")
             driver.get(url)
             # Wait for dynamic content to load
             driver.implicitly_wait(10)
